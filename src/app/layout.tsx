@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+/*import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -30,4 +30,32 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
+}*/
+
+
+import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
+import './globals.css'
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+})
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+})
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+})
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable} font-sans`}>
+        {children}
+      </body>
+    </html>
+  )
 }

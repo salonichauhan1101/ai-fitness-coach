@@ -9,7 +9,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 
         Respond ONLY with valid JSON in this exact format, no markdown, no backticks, no extra text:
         {
-        "food_name": "short description of the meal",
+        "food_name": "Short description of the meal, in Title Case",
         "calories": estimated_number,
         "protein_g": estimated_number,
         "carbs_g": estimated_number,

@@ -10,6 +10,10 @@ type MealResult = {
   carbs_g: number
   fat_g: number
 }
+function capitalizeFirst(text: string) {
+  if (!text) return text
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
 
 export default function MealsPage() {
   const [preview, setPreview] = useState<string | null>(null)
@@ -125,13 +129,30 @@ export default function MealsPage() {
       {error && <p className="mt-4 text-red-600">{error}</p>}
 
       {result && (
-        <div className="mt-4 space-y-1 rounded-lg bg-gray-50 p-4">
-          <p className="font-semibold">{result.food_name}</p>
-          <p>Calories: {result.calories}</p>
-          <p>Protein: {result.protein_g}g</p>
-          <p>Carbs: {result.carbs_g}g</p>
-          <p>Fat: {result.fat_g}g</p>
-          {saved && <p className="text-sm text-green-600">✓ Saved to your log</p>}
+        <div className="mt-4 space-y-2 rounded-lg bg-white p-4 shadow-sm">
+          <p className="font-display font-semibold">{capitalizeFirst(result.food_name)}</p>
+
+          <p className="readout text-2xl font-semibold" style={{ color: 'var(--color-zone-amber)' }}>
+            {result.calories} <span className="text-sm font-normal text-gray-500">cal</span>
+          </p>
+
+          <div className="flex gap-4 pt-1">
+            <span className="readout text-sm" style={{ color: 'var(--color-zone-blue)' }}>
+              {result.protein_g}g <span className="text-gray-400">protein</span>
+            </span>
+            <span className="readout text-sm" style={{ color: 'var(--color-zone-blue)' }}>
+              {result.carbs_g}g <span className="text-gray-400">carbs</span>
+            </span>
+            <span className="readout text-sm" style={{ color: 'var(--color-zone-blue)' }}>
+              {result.fat_g}g <span className="text-gray-400">fat</span>
+            </span>
+          </div>
+
+          {saved && (
+            <p className="text-sm" style={{ color: 'var(--color-zone-coral)' }}>
+              ✓ Saved to your log
+            </p>
+          )}
         </div>
       )}
     </div>
