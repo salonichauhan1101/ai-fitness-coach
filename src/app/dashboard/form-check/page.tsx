@@ -104,12 +104,27 @@ export default function FormCheckPage() {
 
   return (
     <div className="mx-auto max-w-2xl p-8">
-      <h1 className="mb-4 font-display text-2xl font-bold">Form Check</h1>
-      {status && <p className="mb-4 text-sm text-gray-500">{status}</p>}
+      <h1 className="mb-1 font-display text-2xl font-bold">Form Check</h1>
+      <p className="mb-6 text-sm text-gray-500">
+        Position yourself in frame, then perform your exercise.
+      </p>
 
-      <div className="relative overflow-hidden rounded-lg bg-black">
+      <div
+        className="relative overflow-hidden rounded-lg bg-black shadow-sm"
+        style={{ aspectRatio: '4 / 3' }}
+      >
         <video ref={videoRef} className="hidden" playsInline muted />
-        <canvas ref={canvasRef} className="w-full" />
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ transform: 'scaleX(-1)' }}
+        />
+
+        {status && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/80">
+            <p className="text-sm text-white">{status}</p>
+          </div>
+        )}
       </div>
     </div>
   )
