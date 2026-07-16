@@ -3,7 +3,31 @@
 import { useEffect, useRef, useState } from 'react'
 import { FilesetResolver, PoseLandmarker, DrawingUtils } from '@mediapipe/tasks-vision'
 
+type Point = { x: number; y: number }
+
+function calculateAngle(a: Point, b: Point, c: Point) {
+  // b is the vertex (the knee) — angle between vectors b→a and b→c
+  const vectorBA = { x: a.x - b.x, y: a.y - b.y }
+  const vectorBC = { x: c.x - b.x, y: c.y - b.y }
+
+  const dotProduct = vectorBA.x * vectorBC.x + vectorBA.y * vectorBC.y
+  const magnitudeBA = Math.sqrt(vectorBA.x ** 2 + vectorBA.y ** 2)
+  const magnitudeBC = Math.sqrt(vectorBC.x ** 2 + vectorBC.y ** 2)
+
+  const cosAngle = dotProduct / (magnitudeBA * magnitudeBC)
+  const angleRadians = Math.acos(Math.min(1, Math.max(-1, cosAngle)))
+  return (angleRadians * 180) / Math.PI
+}
+
+function getSquatFeedback(kneeAngle: number) {
+  if (kneeAngle > 160) return { label: 'Stand ready', color: 'var(--color-zone-blue)' }
+  if (kneeAngle > 100) return { label: 'Descending — keep going', color: 'var(--color-zone-amber)' }
+  return { label: 'Good depth!', color: 'var(--color-zone-coral)' }
+}
+
 export default function FormCheckPage() {
+const [kneeAngle, setKneeAngle] = useState<number | null>(null)
+const [feedback, setFeedback] = useState<{ label: string; color: string } | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [status, setStatus] = useState('Loading pose detection model...')
@@ -85,6 +109,23 @@ export default function FormCheckPage() {
       }
 
       animationFrameId = requestAnimationFrame(detectLoop)
+      const landmarks = result.landmarks[0]
+      if (landmarks) {
+        const hip = landmarks[23]
+        const knee = landmarks[25]
+        const ankle = landmarks[27]
+
+        // Only calculate if MediaPipe is confident it can see all three points
+        if (
+          hip.visibility! > 0.5 &&
+          knee.visibility! > 0.5 &&
+          ankle.visibility! > 0.5
+        ) {
+          const angle = calculateAngle(hip, knee, ankle)
+          setKneeAngle(angle)
+          setFeedback(getSquatFeedback(angle))
+        }
+      }
     }
 
     setup().catch((err) => {
@@ -126,6 +167,17 @@ export default function FormCheckPage() {
           </div>
         )}
       </div>
+
+      {feedback && kneeAngle !== null && (
+        <div className="mt-4 flex items-center justify-between rounded-lg bg-white p-4 shadow-sm">
+          <p className="font-medium" style={{ color: feedback.color }}>
+            {feedback.label}
+          </p>
+          <p className="readout text-lg" style={{ color: feedback.color }}>
+            {Math.round(kneeAngle)}°
+          </p>
+        </div>
+      )}
     </div>
   )
 }
