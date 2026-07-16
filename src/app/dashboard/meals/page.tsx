@@ -102,7 +102,7 @@ export default function MealsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md p-8">
+    <div className="mx-auto max-w-3xl p-4 md:p-8">
       <h1 className="mb-6 text-2xl font-bold">Log a meal</h1>
 
       <label className="block cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-6 text-center hover:border-gray-400">

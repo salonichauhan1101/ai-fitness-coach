@@ -87,7 +87,7 @@ export default function WorkoutsPage() {
   const suggestion = exerciseName ? getSuggestion(exerciseName) : null
 
   return (
-    <div className="mx-auto max-w-md p-8">
+    <div className="mx-auto max-w-3xl p-4 md:p-8">
       <h1 className="mb-6 text-2xl font-bold">Workout Planner</h1>
 
       <form onSubmit={handleAddWorkout} className="mb-8 space-y-3 rounded-lg bg-gray-50 p-4">

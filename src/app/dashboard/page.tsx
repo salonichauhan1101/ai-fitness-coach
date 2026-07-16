@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
+import { Flame, Dumbbell, Camera, ListChecks, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 type Meal = {
   id: string
@@ -105,31 +107,70 @@ export default function DashboardPage() {
     return <div className="p-8 text-gray-500">Loading your dashboard...</div>
   }
 
+
+
   return (
-    <div className="mx-auto max-w-3xl p-8">
-      <h1 className="mb-1 font-display text-2xl font-bold">Overview</h1>
-      <p className="mb-8 text-sm text-gray-500">
-        {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-      </p>
+    <div className="mx-auto max-w-3xl p-4 md:p-8">
+      {/* Header */}
+      <div className="mb-8">
+        <p className="text-sm text-gray-500">
+          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+        </p>
+        <h1 className="font-display text-3xl font-bold">Welcome back</h1>
+      </div>
 
       {/* Today's snapshot */}
       <div className="mb-8 grid grid-cols-2 gap-4">
-        <div className="rounded-lg bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Calories today</p>
+        <div className="rounded-xl bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2">
+            <Flame size={18} style={{ color: 'var(--color-zone-amber)' }} />
+            <p className="text-sm text-gray-500">Calories today</p>
+          </div>
           <p className="readout text-3xl font-semibold" style={{ color: 'var(--color-zone-amber)' }}>
             {todaysCalories}
           </p>
         </div>
-        <div className="rounded-lg bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Workouts completed today</p>
+        <div className="rounded-xl bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2">
+            <Dumbbell size={18} style={{ color: 'var(--color-zone-blue)' }} />
+            <p className="text-sm text-gray-500">Workouts done today</p>
+          </div>
           <p className="readout text-3xl font-semibold" style={{ color: 'var(--color-zone-blue)' }}>
             {todaysWorkoutsCompleted}
           </p>
         </div>
       </div>
 
+      {/* Quick actions */}
+      <div className="mb-8 grid grid-cols-3 gap-3">
+        <Link
+          href="/dashboard/meals"
+          className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+        >
+          <Flame size={20} style={{ color: 'var(--color-zone-amber)' }} />
+          <span className="text-sm font-medium">Log Meal</span>
+          <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
+        </Link>
+        <Link
+          href="/dashboard/workouts"
+          className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+        >
+          <Dumbbell size={20} style={{ color: 'var(--color-zone-blue)' }} />
+          <span className="text-sm font-medium">Add Workout</span>
+          <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
+        </Link>
+        <Link
+          href="/dashboard/form-check"
+          className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+        >
+          <Camera size={20} style={{ color: 'var(--color-zone-coral)' }} />
+          <span className="text-sm font-medium">Form Check</span>
+          <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
+        </Link>
+      </div>
+
       {/* 7-day trend */}
-      <div className="mb-8 rounded-lg bg-white p-5 shadow-sm">
+      <div className="mb-8 rounded-xl bg-white p-5 shadow-sm">
         <p className="mb-4 font-display text-sm font-semibold text-gray-700">
           Calories — last 7 days
         </p>
@@ -146,8 +187,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent activity */}
-      <div className="rounded-lg bg-white p-5 shadow-sm">
-        <p className="mb-4 font-display text-sm font-semibold text-gray-700">Recent activity</p>
+      <div className="rounded-xl bg-white p-5 shadow-sm">
+        <div className="mb-4 flex items-center gap-2">
+          <ListChecks size={16} className="text-gray-400" />
+          <p className="font-display text-sm font-semibold text-gray-700">Recent activity</p>
+        </div>
         {recentActivity.length === 0 ? (
           <p className="text-sm text-gray-400">
             Nothing logged yet — head to Meals or Workouts to get started.

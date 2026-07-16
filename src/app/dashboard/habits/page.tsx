@@ -114,7 +114,7 @@ export default function HabitsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md p-8">
+    <div className="mx-auto max-w-3xl p-4 md:p-8">
       <h1 className="mb-6 font-display text-2xl font-bold">Habits</h1>
 
       <form onSubmit={addNewHabit} className="mb-2 flex gap-2">
