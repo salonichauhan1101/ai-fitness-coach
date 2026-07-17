@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [meals, setMeals] = useState<Meal[]>([])
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [loading, setLoading] = useState(true)
+  const hasAnyData = meals.length > 0 || workouts.length > 0
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,8 +108,6 @@ export default function DashboardPage() {
     return <div className="p-8 text-gray-500">Loading your dashboard...</div>
   }
 
-
-
   return (
     <div className="mx-auto max-w-3xl p-4 md:p-8">
       {/* Header */}
@@ -119,103 +118,144 @@ export default function DashboardPage() {
         <h1 className="font-display text-3xl font-bold">Welcome back</h1>
       </div>
 
-      {/* Today's snapshot */}
-      <div className="mb-8 grid grid-cols-2 gap-4">
-        <div className="rounded-xl bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2">
-            <Flame size={18} style={{ color: 'var(--color-zone-amber)' }} />
-            <p className="text-sm text-gray-500">Calories today</p>
+      {!hasAnyData ? (
+        /* Empty state — shown only when the user has no meals or workouts yet */
+        <div className="rounded-xl bg-white p-8 text-center shadow-sm">
+          <div
+            className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
+            style={{ backgroundColor: '#F0F4FF' }}
+          >
+            <Flame size={24} style={{ color: 'var(--color-zone-amber)' }} />
           </div>
-          <p className="readout text-3xl font-semibold" style={{ color: 'var(--color-zone-amber)' }}>
-            {todaysCalories}
+          <h2 className="mb-2 font-display text-lg font-semibold">Let&apos;s get started</h2>
+          <p className="mx-auto mb-6 max-w-sm text-sm text-gray-500">
+            Log your first meal or workout, and this page will fill up with your stats, trends, and progress.
           </p>
-        </div>
-        <div className="rounded-xl bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2">
-            <Dumbbell size={18} style={{ color: 'var(--color-zone-blue)' }} />
-            <p className="text-sm text-gray-500">Workouts done today</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <Link
+              href="/dashboard/meals"
+              className="flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-4 transition hover:border-gray-300 hover:shadow-sm"
+            >
+              <Flame size={20} style={{ color: 'var(--color-zone-amber)' }} />
+              <span className="text-sm font-medium">Log a Meal</span>
+            </Link>
+            <Link
+              href="/dashboard/workouts"
+              className="flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-4 transition hover:border-gray-300 hover:shadow-sm"
+            >
+              <Dumbbell size={20} style={{ color: 'var(--color-zone-blue)' }} />
+              <span className="text-sm font-medium">Add a Workout</span>
+            </Link>
+            <Link
+              href="/dashboard/form-check"
+              className="flex flex-col items-center gap-2 rounded-xl border border-gray-200 p-4 transition hover:border-gray-300 hover:shadow-sm"
+            >
+              <Camera size={20} style={{ color: 'var(--color-zone-coral)' }} />
+              <span className="text-sm font-medium">Try Form Check</span>
+            </Link>
           </div>
-          <p className="readout text-3xl font-semibold" style={{ color: 'var(--color-zone-blue)' }}>
-            {todaysWorkoutsCompleted}
-          </p>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* Today's snapshot */}
+          <div className="mb-8 grid grid-cols-2 gap-4">
+            <div className="rounded-xl bg-white p-5 shadow-sm">
+              <div className="mb-2 flex items-center gap-2">
+                <Flame size={18} style={{ color: 'var(--color-zone-amber)' }} />
+                <p className="text-sm text-gray-500">Calories today</p>
+              </div>
+              <p className="readout text-3xl font-semibold" style={{ color: 'var(--color-zone-amber)' }}>
+                {todaysCalories}
+              </p>
+            </div>
+            <div className="rounded-xl bg-white p-5 shadow-sm">
+              <div className="mb-2 flex items-center gap-2">
+                <Dumbbell size={18} style={{ color: 'var(--color-zone-blue)' }} />
+                <p className="text-sm text-gray-500">Workouts done today</p>
+              </div>
+              <p className="readout text-3xl font-semibold" style={{ color: 'var(--color-zone-blue)' }}>
+                {todaysWorkoutsCompleted}
+              </p>
+            </div>
+          </div>
 
-      {/* Quick actions */}
-      <div className="mb-8 grid grid-cols-3 gap-3">
-        <Link
-          href="/dashboard/meals"
-          className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
-        >
-          <Flame size={20} style={{ color: 'var(--color-zone-amber)' }} />
-          <span className="text-sm font-medium">Log Meal</span>
-          <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
-        </Link>
-        <Link
-          href="/dashboard/workouts"
-          className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
-        >
-          <Dumbbell size={20} style={{ color: 'var(--color-zone-blue)' }} />
-          <span className="text-sm font-medium">Add Workout</span>
-          <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
-        </Link>
-        <Link
-          href="/dashboard/form-check"
-          className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
-        >
-          <Camera size={20} style={{ color: 'var(--color-zone-coral)' }} />
-          <span className="text-sm font-medium">Form Check</span>
-          <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
-        </Link>
-      </div>
+          {/* Quick actions */}
+          <div className="mb-8 grid grid-cols-3 gap-3">
+            <Link
+              href="/dashboard/meals"
+              className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+            >
+              <Flame size={20} style={{ color: 'var(--color-zone-amber)' }} />
+              <span className="text-sm font-medium">Log Meal</span>
+              <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
+            </Link>
+            <Link
+              href="/dashboard/workouts"
+              className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+            >
+              <Dumbbell size={20} style={{ color: 'var(--color-zone-blue)' }} />
+              <span className="text-sm font-medium">Add Workout</span>
+              <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
+            </Link>
+            <Link
+              href="/dashboard/form-check"
+              className="group flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+            >
+              <Camera size={20} style={{ color: 'var(--color-zone-coral)' }} />
+              <span className="text-sm font-medium">Form Check</span>
+              <ArrowRight size={14} className="text-gray-300 transition group-hover:text-gray-500" />
+            </Link>
+          </div>
 
-      {/* 7-day trend */}
-      <div className="mb-8 rounded-xl bg-white p-5 shadow-sm">
-        <p className="mb-4 font-display text-sm font-semibold text-gray-700">
-          Calories — last 7 days
-        </p>
-        <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={chartData}>
-            <XAxis dataKey="day" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-            <YAxis hide />
-            <Tooltip
-              contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-            />
-            <Bar dataKey="calories" fill="var(--color-zone-amber)" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+          {/* 7-day trend */}
+          <div className="mb-8 rounded-xl bg-white p-5 shadow-sm">
+            <p className="mb-4 font-display text-sm font-semibold text-gray-700">
+              Calories — last 7 days
+            </p>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={chartData}>
+                <XAxis dataKey="day" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+                <YAxis hide />
+                <Tooltip
+                  contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                />
+                <Bar dataKey="calories" fill="var(--color-zone-amber)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-      {/* Recent activity */}
-      <div className="rounded-xl bg-white p-5 shadow-sm">
-        <div className="mb-4 flex items-center gap-2">
-          <ListChecks size={16} className="text-gray-400" />
-          <p className="font-display text-sm font-semibold text-gray-700">Recent activity</p>
-        </div>
-        {recentActivity.length === 0 ? (
-          <p className="text-sm text-gray-400">
-            Nothing logged yet — head to Meals or Workouts to get started.
-          </p>
-        ) : (
-          <ul className="space-y-3">
-            {recentActivity.map((item, i) => (
-              <li key={i} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="h-2 w-2 rounded-full"
-                    style={{
-                      backgroundColor:
-                        item.type === 'meal' ? 'var(--color-zone-amber)' : 'var(--color-zone-blue)',
-                    }}
-                  />
-                  <span>{item.label}</span>
-                </div>
-                <span className="readout text-gray-500">{item.detail}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+          {/* Recent activity */}
+          <div className="rounded-xl bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center gap-2">
+              <ListChecks size={16} className="text-gray-400" />
+              <p className="font-display text-sm font-semibold text-gray-700">Recent activity</p>
+            </div>
+            {recentActivity.length === 0 ? (
+              <p className="text-sm text-gray-400">
+                Nothing logged yet — head to Meals or Workouts to get started.
+              </p>
+            ) : (
+              <ul className="space-y-3">
+                {recentActivity.map((item, i) => (
+                  <li key={i} className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="h-2 w-2 rounded-full"
+                        style={{
+                          backgroundColor:
+                            item.type === 'meal' ? 'var(--color-zone-amber)' : 'var(--color-zone-blue)',
+                        }}
+                      />
+                      <span>{item.label}</span>
+                    </div>
+                    <span className="readout text-gray-500">{item.detail}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </>
+      )}
     </div>
   )
 }
