@@ -1,5 +1,16 @@
 # AI Fitness Coach
 
+> [!NOTE]
+> Looking for my Java Stock Portfolio Simulator project?
+>
+> [View Stock Portfolio Simulator →](https://github.com/YOUR_USERNAME/Stock-Portfolio-Simulator)
+>
+> A Java-based investment simulation application featuring
+> MVC architecture, Java Swing, Alpha Vantage API integration,
+> portfolio analytics, and automated investment strategies.
+
+---
+## AI Fitness Coach
 A full-stack fitness tracking app that combines AI vision, real-time computer vision, and habit tracking in one clean, mobile-friendly interface. Built as a portfolio project to explore multimodal AI integration alongside more traditional full-stack patterns.
 
 **[Live Demo](#)** · **[Tech Stack](#tech-stack)** · **[Features](#features)**
