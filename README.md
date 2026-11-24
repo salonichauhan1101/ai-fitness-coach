@@ -3,7 +3,7 @@
 > [!NOTE]
 > Looking for my Java Stock Portfolio Simulator project?
 >
-> [View Stock Portfolio Simulator →](https://github.com/YOUR_USERNAME/Stock-Portfolio-Simulator)
+> [View Stock Portfolio Simulator →](https://github.com/salonichauhan1101/Stock-Portfolio-Simulator)
 >
 > A Java-based investment simulation application featuring
 > MVC architecture, Java Swing, Alpha Vantage API integration,
